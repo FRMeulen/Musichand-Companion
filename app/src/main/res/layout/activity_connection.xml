@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".ConnectionActivity">
+
+    <RelativeLayout
+        android:id="@+id/mainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/bt_connected_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="14dp"
+            android:text="@string/bt_connected_text"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/bt_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/bt_connected_text"
+            android:layout_alignBottom="@+id/bt_connected_text"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/bt_connected_text"
+            android:layout_toRightOf="@+id/bt_connected_text"
+            android:text="@string/bt_state"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:id="@+id/buttonLayoutOne"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bt_connected_text"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/onOffButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/on_off"
+                style="?android:attr/buttonBarButtonStyle"/>
+
+
+            <Button
+                android:id="@+id/listButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/list_devices"
+                android:visibility="invisible"
+                style="?android:attr/buttonBarButtonStyle"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/buttonLayoutTwo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/buttonLayoutOne"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/connectButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/connect"
+                android:visibility="invisible"
+                style="?android:attr/buttonBarButtonStyle"/>
+
+            <Button
+                android:id="@+id/disconnectButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/disconnect"
+                android:visibility="invisible"
+                style="?android:attr/buttonBarButtonStyle"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/bt_selected_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:text="@string/bt_selected_text"
+            android:layout_below="@id/buttonLayoutTwo"
+            android:visibility="invisible"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/bt_selected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/bt_selected_text"
+            android:layout_alignBottom="@+id/bt_selected_text"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/bt_selected_text"
+            android:layout_toRightOf="@+id/bt_selected_text"
+            android:text="@string/bt_selected"
+            android:layout_below="@+id/buttonLayoutTwo"
+            android:visibility="invisible"
+            android:textSize="20sp" />
+
+        <ListView
+            android:id="@+id/deviceList"
+            android:layout_width="match_parent"
+            android:layout_height="253dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:visibility="invisible"
+            android:layout_below="@+id/bt_selected_text" />
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

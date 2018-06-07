@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SelectionActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <TextView
+            android:id="@+id/selectText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/select_text"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/instrumentSelectionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/selectText"
+            android:text="@string/instrument_selection_text"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:id="@+id/instrumentSelection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/selectText"
+            android:layout_toRightOf="@+id/instrumentSelectionText"
+            android:text="@string/instrument_selection"
+            android:textSize="20dp"/>
+
+        <!--First row-->
+        <LinearLayout
+            android:id="@+id/topRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/instrumentSelectionText">
+
+            <RelativeLayout
+                android:id="@+id/topRowWhitespaceOne"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.025">
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/topRowButtonOne"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3">
+
+                <Button
+                    android:id="@+id/buttonInstrumentBass"
+                    android:drawableTop="@drawable/ic_bass"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:text="@string/instrument_bass" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/topRowWhitespaceTwo"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.025">
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/topRowButtonTwo"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3">
+
+                <Button
+                    android:id="@+id/buttonInstrumentCello"
+                    android:drawableTop="@drawable/ic_cello"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:text="@string/instrument_cello" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/topRowWhitespaceThree"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.025">
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/topRowButtonThree"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3">
+
+                <Button
+                    android:id="@+id/buttonInstrumentDjembe"
+                    android:drawableTop="@drawable/ic_djembe"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:text="@string/instrument_djembe"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/topRowWhitespaceFour"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.025">
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!--Second row-->
+        <LinearLayout
+            android:id="@+id/middleRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/topRow">
+
+            <RelativeLayout
+                android:id="@+id/middleRowWhitespaceOne"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.025">
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/middleRowButtonOne"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3">
+
+                <Button
+                    android:id="@+id/buttonInstrumentDrums"
+                    android:drawableTop="@drawable/ic_drums"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:text="@string/instrument_drums" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/middleRowWhitespaceTwo"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.025">
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/middleRowButtonTwo"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3">
+
+                <Button
+                    android:id="@+id/buttonInstrumentGuitar"
+                    android:drawableTop="@drawable/ic_guitar"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:text="@string/instrument_guitar" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/middkeRowWhitespaceThree"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.025">
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/middleRowButtonThree"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3">
+
+                <Button
+                    android:id="@+id/buttonInstrumentMaracas"
+                    android:drawableTop="@drawable/ic_maracas"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:text="@string/instrument_maracas"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/middleRowWhitespaceFour"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.025">
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!--Bottom row-->
+        <LinearLayout
+            android:id="@+id/bottomRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/middleRow">
+
+            <RelativeLayout
+                android:id="@+id/bottomRowWhitespaceOne"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.025">
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/bottomRowButtonOne"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3">
+
+                <Button
+                    android:id="@+id/buttonInstrumentPiano"
+                    android:drawableTop="@drawable/ic_piano"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:text="@string/instrument_piano" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/bottomRowWhitespaceTwo"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.025">
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/bottomRowButtonTwo"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3">
+
+                <Button
+                    android:id="@+id/buttonInstrumentTambourine"
+                    android:drawableTop="@drawable/ic_tambourine"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:text="@string/instrument_tambourine" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/bottomRowWhitespaceThree"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.025">
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/bottomRowButtonThree"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3">
+
+                <Button
+                    android:id="@+id/buttonInstrumentViolin"
+                    android:drawableTop="@drawable/ic_violin"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="center"
+                    android:text="@string/instrument_violin"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/bottomRowWhitespaceFour"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.025">
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/doneButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="25dp"
+            android:layout_centerHorizontal="true"
+            android:text="@string/selection_done" />
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

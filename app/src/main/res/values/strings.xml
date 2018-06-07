@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Musichand Companion</string>
+    <string name="bt_connected_text">Connected:</string>
+    <string name="bt_state">NONE</string>
+    <string name="data_received_text">Data Received:</string>
+    <string name="data_received">...</string>
+    <string name="on_off">On/Off</string>
+    <string name="discoverability">Visibility</string>
+    <string name="list_devices">Discover</string>
+    <string name="connect">Connect</string>
+    <string name="send">Send</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="sendTextHint">Put text here to send</string>
+    <string name="bt_selected_text">Selected: </string>
+    <string name="bt_selected">NONE</string>
+    <string name="select_instrument">Select instrument!</string>
+    <string name="select_button">Select!</string>
+    <string name="select_text">Please select an instrument!</string>
+    <string name="instrument_selection_text">Selected:</string>
+    <string name="instrument_selection">NONE</string>
+    <string name="instrument_bass">Bass</string>
+    <string name="instrument_cello">Cello</string>
+    <string name="instrument_djembe">Djembe</string>
+    <string name="instrument_drums">Drums</string>
+    <string name="instrument_guitar">Guitar</string>
+    <string name="instrument_maracas">Maracas</string>
+    <string name="instrument_piano">Piano</string>
+    <string name="instrument_tambourine">Tambourine</string>
+    <string name="instrument_violin">Violin</string>
+    <string name="selection_done">Done</string>
+    <string name="main_selected_instrument">NONE</string>
+</resources>

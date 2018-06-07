@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <TextView
+            android:id="@+id/selectedInstrumentText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="@string/instrument_selection_text"/>
+
+        <TextView
+            android:id="@+id/selectedInstrument"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="@string/main_selected_instrument"
+            android:layout_toRightOf="@id/selectedInstrumentText"/>
+
+        <TextView
+            android:id="@+id/selectInstrumentText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_instrument"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/selectedInstrumentText"/>
+
+        <Button
+            android:id="@+id/selectButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/selectInstrumentText"
+            android:layout_below="@id/selectedInstrumentText"
+            android:text="@string/select_button" />
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

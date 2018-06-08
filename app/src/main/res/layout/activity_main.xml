@@ -16,33 +16,81 @@
             android:id="@+id/selectedInstrumentText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:text="@string/instrument_selection_text"/>
 
         <TextView
             android:id="@+id/selectedInstrument"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:text="@string/main_selected_instrument"
-            android:layout_toRightOf="@id/selectedInstrumentText"/>
-
-        <TextView
-            android:id="@+id/selectInstrumentText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/select_instrument"
-            android:textSize="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/selectedInstrumentText"/>
+            android:layout_toRightOf="@id/selectedInstrumentText"
+            android:layout_toEndOf="@id/selectedInstrumentText"/>
 
         <Button
-            android:id="@+id/selectButton"
+            android:id="@+id/selectInstrumentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/selectInstrumentText"
             android:layout_below="@id/selectedInstrumentText"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:text="@string/select_button" />
+
+        <TextView
+            android:id="@+id/selectedRightText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/right_selection_text"
+            android:layout_below="@id/selectInstrumentButton"/>
+
+        <TextView
+            android:id="@+id/selectedRightBT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/bt_right_device"
+            android:layout_below="@id/selectInstrumentButton"
+            android:layout_toRightOf="@id/selectedRightText"
+            android:layout_toEndOf="@id/selectedRightText"/>
+
+        <Button
+            android:id="@+id/selectRightDeviceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/selectedRightText"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:text="@string/select_button" />
+
+        <TextView
+            android:id="@+id/selectedLeftText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/left_selection_text"
+            android:layout_below="@id/selectRightDeviceButton"/>
+
+        <TextView
+            android:id="@+id/selectedLeftBT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/bt_left_device"
+            android:layout_below="@id/selectRightDeviceButton"
+            android:layout_toRightOf="@id/selectedLeftText"
+            android:layout_toEndOf="@id/selectedLeftText"/>
+
+        <Button
+            android:id="@+id/selectLeftDeviceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_button"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_below="@id/selectedLeftText"/>
+
 
     </RelativeLayout>
 

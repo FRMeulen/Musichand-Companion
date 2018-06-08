@@ -16,10 +16,11 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.UUID;
 
 //Class
-public class BluetoothConnectionService {
+public class BluetoothConnectionService implements Serializable{
     private static final String TAG = "BluetoothConnectionServ";    //Log Tag
     private static final String appName = "MYAPP";  //App name
     private static final UUID MY_UUID_INSECURE = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");   //UUID
@@ -47,7 +48,7 @@ public class BluetoothConnectionService {
     }
 
     //Accept Thread
-    private class AcceptThread extends Thread {
+    private class AcceptThread extends Thread implements Serializable {
         private final BluetoothServerSocket mmServerSocket; //Server socket
 
         //Constructor
@@ -93,7 +94,7 @@ public class BluetoothConnectionService {
     }
 
     //Connect thread
-    private class ConnectThread extends Thread{
+    private class ConnectThread extends Thread implements Serializable {
         private BluetoothSocket mmSocket;   //Socket stored in ConnectThread
 
         //Constructor
@@ -177,17 +178,15 @@ public class BluetoothConnectionService {
     }
 
     //Connected thread
-    private class ConnectedThread extends Thread {
+    private class ConnectedThread extends Thread implements Serializable {
         private final BluetoothSocket mmSocket; //Socket
         private final InputStream mmInStream;   //Input stream
-        private final OutputStream mmOutStream; //Output stream
 
         //Constructor
         public ConnectedThread (BluetoothSocket socket){
             Log.i(TAG, "ConnectedThread: starting");    //Log
             mmSocket = socket;  //Set socket
             InputStream tmpIn = null;   //Inputstream is null at first
-            OutputStream tmpOut = null; //Outputstream is null at first
             mProgressDialog.dismiss();  //Clear progress dialog
 
             try {   //Try to get input stream
@@ -195,14 +194,8 @@ public class BluetoothConnectionService {
             } catch (IOException e) {   //Catch exceptions
                 Log.e(TAG, "ConnectedThread: Failed to get input stream");  //Log
             }
-            try {   //Try to get output stream
-                tmpOut = mmSocket.getOutputStream();    //Get output stream
-            } catch (IOException e) {   //Catch exceptions
-                Log.e(TAG, "ConnectedThread: Failed to get output stream"); //Log
-            }
 
             mmInStream = tmpIn; //Store input stream in permanent variable
-            mmOutStream = tmpOut;   //Store output stream in permanent variable
         }
 
         //Run on creation
@@ -234,23 +227,16 @@ public class BluetoothConnectionService {
             return; //Kill thread
         }
 
-        //Write to bluetooth
-        public void write(byte[] bytes){
-            try {   //Try to write
-                Log.d(TAG, "write: Writing text...");   //Log
-                mmOutStream.write(bytes);   //Write
-                Log.d(TAG, "write: Done writing");  //Log
-            } catch (IOException e) {   //Catch exceptions
-                Log.e(TAG, "write: Error writing to outputStream"); //Log
-            }
-        }
-
         //Cancel thread
         public void cancel(){
             try{    //Try to close socket
                 mmSocket.close();   //Close socket
             } catch(IOException e){}    //Catch exceptions
         }
+    }
+
+    public void setDevice(BluetoothDevice device){
+        mmDevice = device;
     }
 
     //Start connection
@@ -260,15 +246,5 @@ public class BluetoothConnectionService {
         mConnectedThread = new ConnectedThread(mmSocket);   //Create ConnectedThread
         mConnectedThread.start();   //Start ConnectedThread
         parser.start();
-    }
-
-    //Write method accessor
-    public void write(byte[] out){
-        mConnectedThread.write(out);    //Call write method in ConnectedThread
-    }
-
-    //Get read data
-    public String getDataRead(){
-        return dataRead;    //Return read data
     }
 }

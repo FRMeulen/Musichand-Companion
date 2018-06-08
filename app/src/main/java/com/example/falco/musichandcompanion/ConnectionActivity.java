@@ -4,6 +4,7 @@ package com.example.falco.musichandcompanion;
 //Imports
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -31,6 +32,8 @@ import java.util.UUID;
 
 
 public class ConnectionActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+
+    String side;    //Right hand or Left hand
 
     //Buttons
     Button onOffButton; //Enable or disable bluetooth
@@ -192,7 +195,12 @@ public class ConnectionActivity extends AppCompatActivity implements AdapterView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_connection);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            side = extras.getString("side");
+        }
 
         //Adapters
         mBluetoothAdapter = mBluetoothAdapter.getDefaultAdapter();
@@ -215,7 +223,7 @@ public class ConnectionActivity extends AppCompatActivity implements AdapterView
         registerReceiver(mBroadcastReceiverBondState, filter);
 
         //Listeners
-        deviceList.setOnItemClickListener(ConnectionActivity.this);   //Device list item click listener
+        deviceList.setOnItemClickListener(ConnectionActivity.this);
 
         if(mBluetoothAdapter.isEnabled()){
             discoverButton.setVisibility(View.VISIBLE);
@@ -255,13 +263,7 @@ public class ConnectionActivity extends AppCompatActivity implements AdapterView
             @Override
             public void onClick(View view) {
                 if(mBTDevice != null){
-                    startConnection();  //Start connection to selected device
-                    btState.setText(mBTDevice.getName());   //Show connected device's name
-                    btSelectedText.setVisibility(View.INVISIBLE);   //Hide "Selected: "
-                    btSelected.setVisibility(View.INVISIBLE);   //Hide selection
-                    deviceList.setVisibility(View.INVISIBLE);   //Hide device list
-                    connectButton.setVisibility(View.INVISIBLE);
-                    disconnectButton.setVisibility(View.VISIBLE);   //Show disconnect button
+                    returnConnection();
                 }
                 else{
                     Toast noneSelectedToast = Toast.makeText(getApplicationContext(), "No device selected!", Toast.LENGTH_LONG);
@@ -289,8 +291,17 @@ public class ConnectionActivity extends AppCompatActivity implements AdapterView
         });
     }
 
-    public void startConnection(){
-        startBluetoothConnection(mBTDevice, MY_UUID_INSECURE);  //Start connection
+    public void returnConnection(){
+        Intent returnIntent = new Intent(this, MainActivity.class);
+        if(side.equals("right")){
+            returnIntent.putExtra("rightConnectionName", mBTDevice.getName());
+            returnIntent.putExtra("rightConnection", mBluetoothConnection);
+        }
+        else if(side.equals("left")){
+            returnIntent.putExtra("leftConnectionName", mBTDevice.getName());
+            returnIntent.putExtra("leftConnection", mBluetoothConnection);
+        }
+        startActivity(returnIntent);
     }
 
     public void killConnection(){
@@ -298,10 +309,6 @@ public class ConnectionActivity extends AppCompatActivity implements AdapterView
             mBluetoothConnection.killClient();  //Kill connection
             mBluetoothConnection = null;    //Delete connection object
         }
-    }
-
-    public void startBluetoothConnection(BluetoothDevice device, UUID uuid){
-        mBluetoothConnection.startClient(device, uuid); //Start bluetooth connection
     }
 
     //Discovery
@@ -367,7 +374,6 @@ public class ConnectionActivity extends AppCompatActivity implements AdapterView
         }
     }
 
-    //Item click in ListView
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         mBluetoothAdapter.cancelDiscovery();    //Cancel discovery to save memory
@@ -380,7 +386,7 @@ public class ConnectionActivity extends AppCompatActivity implements AdapterView
         Log.d(TAG, "onItemClick: deviceAddress = " + deviceAddress);    //Log
 
         //Create the bond
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2){ //If device uses android Jelly Bean MR2 or up
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) { //If device uses android Jelly Bean MR2 or up
             Log.d(TAG, "Trying to pair with " + deviceName);    //Log
             mBTDevices.get(position).createBond();  //Create bond
 

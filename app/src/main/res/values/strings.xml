@@ -13,10 +13,11 @@
     <string name="sendTextHint">Put text here to send</string>
     <string name="bt_selected_text">Selected: </string>
     <string name="bt_selected">NONE</string>
-    <string name="select_instrument">Select instrument!</string>
     <string name="select_button">Select!</string>
     <string name="select_text">Please select an instrument!</string>
-    <string name="instrument_selection_text">Selected:</string>
+    <string name="instrument_selection_text">Selected Instrument:</string>
+    <string name="right_selection_text">Selected Right Device:</string>
+    <string name="left_selection_text">Selected Left Device:</string>
     <string name="instrument_selection">NONE</string>
     <string name="instrument_bass">Bass</string>
     <string name="instrument_cello">Cello</string>
@@ -29,4 +30,6 @@
     <string name="instrument_violin">Violin</string>
     <string name="selection_done">Done</string>
     <string name="main_selected_instrument">NONE</string>
+    <string name="bt_right_device">NONE</string>
+    <string name="bt_left_device">NONE</string>
 </resources>

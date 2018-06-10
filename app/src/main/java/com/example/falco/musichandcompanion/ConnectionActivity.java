@@ -35,27 +35,36 @@ public class ConnectionActivity extends AppCompatActivity implements AdapterView
 
     String side;    //Right hand or Left hand
 
+    //Fields to return
+    String instrument;  //Stores previously selected instrument
+    BluetoothDevice leftDevice; //Stores left device if selecting right
+    BluetoothDevice rightDevice;    //Stores right device if selecting left
+    String leftConnectionName;  //Stores name of left connection
+    String rightConnectionName; //Stores name of right connection
+
     //Buttons
     Button onOffButton; //Enable or disable bluetooth
     Button discoverButton;  //Discover unpaired devices nearby
-    Button connectButton;   //Connect to selected device
-    Button disconnectButton;    //Disconnect bluetooth
+    Button selectButton;   //Connect to selected device
 
     //Text fields
-    TextView btState;   //Text showing bluetooth state
     TextView btSelectedText;    //Text showing "Selected: "
     TextView btSelected;    //Text showing selected device
 
     //Bluetooth fields
-    BluetoothConnectionService mBluetoothConnection;    //Bluetooth connection object
     BluetoothDevice mBTDevice;  //Bluetooth device object
     BluetoothAdapter mBluetoothAdapter; //Device bluetooth adapter
+
+    //Receiver booleans
+    boolean state_changed_receiver = false;
+    boolean found_receiver = false;
+    boolean bond_state_changed_receiver = false;
 
     //UUID
     private static final UUID MY_UUID_INSECURE = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");   //Default SerialPortService ID
 
     //Tag for logging
-    private static final String TAG = "My Activity";    //Tag for logs
+    private static final String TAG = "ConnectionActivity";    //Tag for logs
 
     //Device list
     public ArrayList<BluetoothDevice> mBTDevices = new ArrayList<>();   //List of discovered devices
@@ -82,34 +91,6 @@ public class ConnectionActivity extends AppCompatActivity implements AdapterView
                         break;
                     case BluetoothAdapter.STATE_TURNING_ON: //If bluetooth is turning on
                         Log.d(TAG, "bluetoothAdapter: State Turning On");   //Log
-                        break;
-                }
-            }
-        }
-    };
-
-    // Create a BroadcastReceiver for ACTION_SCAN_MODE_CHANGED.
-    private final BroadcastReceiver mBroadcastReceiverDiscoverabilityState = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
-            if (action.equals(mBluetoothAdapter.ACTION_SCAN_MODE_CHANGED)) {    //If scan mode changed
-                int mode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE, mBluetoothAdapter.ERROR);   //Get scan mode
-
-                switch(mode){
-                    case BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE:   //If connectable and discoverable
-                        Log.d(TAG, "bluetoothAdapter: Discoverability enabled");    //Log
-                        break;
-                    case BluetoothAdapter.SCAN_MODE_CONNECTABLE:    //If connectable but NOT discoverable
-                        Log.d(TAG, "bluetoothAdapter: Discoverability disabled. Able to receive connections");  //Log
-                        break;
-                    case BluetoothAdapter.SCAN_MODE_NONE:   //If not connectable and discoverable
-                        Log.d(TAG, "bluetoothAdapter: Discoverability disabled. Not able to receive connections");  //Log
-                        break;
-                    case BluetoothAdapter.STATE_CONNECTING: //If connecting
-                        Log.d(TAG, "bluetoothAdapter: Connecting...");  //Log
-                        break;
-                    case BluetoothAdapter.STATE_CONNECTED:  //If connected
-                        Log.d(TAG, "bluetoothAdapter: Connected."); //Log
                         break;
                 }
             }
@@ -185,10 +166,17 @@ public class ConnectionActivity extends AppCompatActivity implements AdapterView
     protected void onDestroy(){
         Log.d(TAG, "onDestroy: called.");
         super.onDestroy();
-        unregisterReceiver(mBroadcastReceiverBTState);
-        unregisterReceiver(mBroadcastReceiverDiscoverabilityState);
-        unregisterReceiver(mBroadcastReceiverDeviceFound);
-        unregisterReceiver(mBroadcastReceiverBondState);
+        if(state_changed_receiver){
+            unregisterReceiver(mBroadcastReceiverBTState);
+        }
+
+        if(found_receiver){
+            unregisterReceiver(mBroadcastReceiverDeviceFound);
+        }
+
+        if(bond_state_changed_receiver){
+            unregisterReceiver(mBroadcastReceiverBondState);
+        }
     }
 
     //When app is started
@@ -200,6 +188,17 @@ public class ConnectionActivity extends AppCompatActivity implements AdapterView
         Bundle extras = getIntent().getExtras();
         if(extras != null){
             side = extras.getString("side");
+            instrument = extras.getString("instrument");
+            if(side.equals("right")){
+                rightDevice = extras.getParcelable("rightDevice");
+                leftDevice = extras.getParcelable("leftDevice");
+                mIgnoredDevices.add(leftDevice);
+            }
+            if(side.equals("left")){
+                rightDevice = extras.getParcelable("rightDevice");
+                leftDevice = extras.getParcelable("leftDevice");
+                mIgnoredDevices.add(rightDevice);
+            }
         }
 
         //Adapters
@@ -208,19 +207,20 @@ public class ConnectionActivity extends AppCompatActivity implements AdapterView
         //Buttons
         onOffButton = findViewById(R.id.onOffButton);
         discoverButton = findViewById(R.id.listButton);
-        deviceList = findViewById(R.id.deviceList);
-        mBTDevices = new ArrayList<>();
-        connectButton = findViewById(R.id.connectButton);
-        disconnectButton = findViewById(R.id.disconnectButton);
+        selectButton = findViewById(R.id.selectButton);
+
+        //Misc
+        deviceList = findViewById(R.id.deviceList); //ListView containing ArrayList contents
+        mBTDevices = new ArrayList<>(); //ArrayList containing found devices
 
         //Text Fields
-        btState = findViewById(R.id.bt_state);
         btSelectedText = findViewById(R.id.bt_selected_text);
         btSelected = findViewById(R.id.bt_selected);
 
         //Filter for bond state changed
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         registerReceiver(mBroadcastReceiverBondState, filter);
+        bond_state_changed_receiver = true;
 
         //Listeners
         deviceList.setOnItemClickListener(ConnectionActivity.this);
@@ -250,7 +250,7 @@ public class ConnectionActivity extends AppCompatActivity implements AdapterView
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Discovering devices...");  //Log
                 mBTDevices.clear(); //Empty device list to avoid duplicates
-                connectButton.setVisibility(View.VISIBLE);  //Show connect button
+                selectButton.setVisibility(View.VISIBLE);  //Show connect button
                 btSelectedText.setVisibility(View.VISIBLE); //Show "Selected: "
                 btSelected.setVisibility(View.VISIBLE); //Show selected device
                 deviceList.setVisibility(View.VISIBLE); //Show found devices
@@ -259,7 +259,7 @@ public class ConnectionActivity extends AppCompatActivity implements AdapterView
         });
 
         //Connect button
-        connectButton.setOnClickListener(new View.OnClickListener() {
+        selectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(mBTDevice != null){
@@ -271,44 +271,16 @@ public class ConnectionActivity extends AppCompatActivity implements AdapterView
                 }
             }
         });
-
-        //Disconnect button
-        disconnectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                killConnection();   //Kill connection
-
-                //Reset to start of application
-                if(mBluetoothAdapter.isEnabled()){
-                    discoverButton.setVisibility(View.VISIBLE);
-                }
-                disconnectButton.setVisibility(View.INVISIBLE);
-                mBTDevice = null;
-                mBTDevices.clear();
-                btSelected.setText("NONE");
-                btState.setText("NONE");
-            }
-        });
     }
 
     public void returnConnection(){
         Intent returnIntent = new Intent(this, MainActivity.class);
-        if(side.equals("right")){
-            returnIntent.putExtra("rightConnectionName", mBTDevice.getName());
-            returnIntent.putExtra("rightConnection", mBluetoothConnection);
-        }
-        else if(side.equals("left")){
-            returnIntent.putExtra("leftConnectionName", mBTDevice.getName());
-            returnIntent.putExtra("leftConnection", mBluetoothConnection);
-        }
+        returnIntent.putExtra("instrument", instrument);
+        returnIntent.putExtra("rightDevice", rightDevice);
+        returnIntent.putExtra("rightConnectionName", rightConnectionName);
+        returnIntent.putExtra("leftDevice", leftDevice);
+        returnIntent.putExtra("leftDeviceName", leftConnectionName);
         startActivity(returnIntent);
-    }
-
-    public void killConnection(){
-        if(mBluetoothConnection != null){   //If connection exists
-            mBluetoothConnection.killClient();  //Kill connection
-            mBluetoothConnection = null;    //Delete connection object
-        }
     }
 
     //Discovery
@@ -325,6 +297,7 @@ public class ConnectionActivity extends AppCompatActivity implements AdapterView
             mBluetoothAdapter.startDiscovery(); //Restart discovery
             IntentFilter discoverDevicesIntent = new IntentFilter(BluetoothDevice.ACTION_FOUND);    //Filter for device found
             registerReceiver(mBroadcastReceiverDeviceFound, discoverDevicesIntent); //Register receiver
+            found_receiver = true;
         }
 
         if(!mBluetoothAdapter.isDiscovering()){ //If not discovering
@@ -334,6 +307,7 @@ public class ConnectionActivity extends AppCompatActivity implements AdapterView
             mBluetoothAdapter.startDiscovery(); //Start discovery
             IntentFilter discoverDevicesIntent = new IntentFilter(BluetoothDevice.ACTION_FOUND);    //Filter for device found
             registerReceiver(mBroadcastReceiverDeviceFound, discoverDevicesIntent); //Register receiver
+            found_receiver = true;
         }
     }
 
@@ -363,6 +337,7 @@ public class ConnectionActivity extends AppCompatActivity implements AdapterView
 
             IntentFilter bluetoothIntent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED); //Filter for adapter state changed
             registerReceiver(mBroadcastReceiverBTState, bluetoothIntent);   //Register receiver
+            state_changed_receiver = true;
         }
 
         if(mBluetoothAdapter.isEnabled()){  //If adapter is enabled
@@ -371,6 +346,7 @@ public class ConnectionActivity extends AppCompatActivity implements AdapterView
 
             IntentFilter bluetoothIntent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED); //Filter for adapter state changed
             registerReceiver(mBroadcastReceiverBTState, bluetoothIntent);   //Register receiver
+            state_changed_receiver = true;
         }
     }
 
@@ -390,8 +366,17 @@ public class ConnectionActivity extends AppCompatActivity implements AdapterView
             Log.d(TAG, "Trying to pair with " + deviceName);    //Log
             mBTDevices.get(position).createBond();  //Create bond
 
+            if(side.equals("right")){
+                rightDevice = mBTDevices.get(position);
+                rightConnectionName = rightDevice.getName();
+            }
+            else if(side.equals("left")){
+                leftDevice = mBTDevices.get(position);
+                leftConnectionName = leftDevice.getName();
+            }
+
             mBTDevice = mBTDevices.get(position);   //Store connected device in variable
-            mBluetoothConnection = new BluetoothConnectionService(ConnectionActivity.this);   //Start connection service
+            selectButton.setVisibility(View.VISIBLE);   //Show select button
             //Starting a connection service starts an AcceptThread
         }
     }

@@ -6,4 +6,33 @@
     android:layout_height="match_parent"
     tools:context=".PlayActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/enjoy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/enjoy"
+            android:textSize="35sp"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/play_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_below="@id/enjoy"
+            android:layout_centerHorizontal="true"/>
+
+        <Button
+            android:id="@+id/resetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below ="@id/play_mode"
+            android:text="@string/reset"/>
+    </RelativeLayout>
+
 </android.support.constraint.ConstraintLayout>

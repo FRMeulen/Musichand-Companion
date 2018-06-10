@@ -1,16 +1,10 @@
 <resources>
     <string name="app_name">Musichand Companion</string>
-    <string name="bt_connected_text">Connected:</string>
-    <string name="bt_state">NONE</string>
-    <string name="data_received_text">Data Received:</string>
-    <string name="data_received">...</string>
-    <string name="on_off">On/Off</string>
-    <string name="discoverability">Visibility</string>
-    <string name="list_devices">Discover</string>
-    <string name="connect">Connect</string>
-    <string name="send">Send</string>
-    <string name="disconnect">Disconnect</string>
-    <string name="sendTextHint">Put text here to send</string>
+    <string name="welcome">Welcome!</string>
+    <string name="musichandver">To Musichand version 1.0</string>
+    <string name="on_off">Bluetooth On/Off!</string>
+    <string name="list_devices">Discover Devices!</string>
+    <string name="select">Select!</string>
     <string name="bt_selected_text">Selected: </string>
     <string name="bt_selected">NONE</string>
     <string name="select_button">Select!</string>
@@ -19,6 +13,7 @@
     <string name="right_selection_text">Selected Right Device:</string>
     <string name="left_selection_text">Selected Left Device:</string>
     <string name="instrument_selection">NONE</string>
+    <string name="wip">[WIP]</string>
     <string name="instrument_bass">Bass</string>
     <string name="instrument_cello">Cello</string>
     <string name="instrument_djembe">Djembe</string>
@@ -32,4 +27,10 @@
     <string name="main_selected_instrument">NONE</string>
     <string name="bt_right_device">NONE</string>
     <string name="bt_left_device">NONE</string>
+    <string name="play">PLAY!</string>
+    <string name="enjoy">Enjoy playing!</string>
+    <string name="two_handed">Mode: Two-Handed</string>
+    <string name="left_handed">Mode: Left-Handed</string>
+    <string name="right_handed">Mode: Right-Handed</string>
+    <string name="reset">RESET APP</string>
 </resources>

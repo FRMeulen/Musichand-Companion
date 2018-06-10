@@ -73,7 +73,7 @@ public class BluetoothConnectionService implements Serializable{
 
             try{    //Try to accept
                 Log.d(TAG, "run: Rfcomm server socket start");  //Log
-                socket = mmServerSocket.accept();   //Accept socket
+                mmServerSocket.accept();   //Accept socket
                 Log.d(TAG, "run: Rfcomm server socket accepted connection");    //Log
                 Log.i(TAG, "Killing AcceptThread!");    //Log
                 return; //Kill thread
@@ -98,10 +98,9 @@ public class BluetoothConnectionService implements Serializable{
         private BluetoothSocket mmSocket;   //Socket stored in ConnectThread
 
         //Constructor
-        public ConnectThread(BluetoothDevice device, UUID uuid){
+        public ConnectThread(BluetoothDevice device){
             Log.i(TAG, "ConnectThread: started");   //Log
             mmDevice = device;  //Set device
-            deviceUUID = uuid;  //Set UUID
         }
 
         //Run on creation
@@ -110,7 +109,7 @@ public class BluetoothConnectionService implements Serializable{
 
             try{    //Create Rfcomm socket
                 Log.d(TAG, "ConnectThread: Trying to create InsecureRfcommSocket using UUID " + MY_UUID_INSECURE);  //Log
-                tmp = mmDevice.createInsecureRfcommSocketToServiceRecord(deviceUUID);   //Create Rfcomm socket
+                tmp = mmDevice.createInsecureRfcommSocketToServiceRecord(MY_UUID_INSECURE);   //Create Rfcomm socket
             }catch(IOException e){  //Catch exceptions
                 Log.e(TAG, "ConnectThread: Could not create InsecureRfcommSocket " + e.getMessage());   //Log
             }
@@ -169,11 +168,11 @@ public class BluetoothConnectionService implements Serializable{
     }
 
     //Start client
-    public void startClient(BluetoothDevice device, UUID uuid){
+    public void startClient(BluetoothDevice device){
         Log.d(TAG, "startClient: started"); //Log
 
         mProgressDialog = ProgressDialog.show(mContext, "Connecting Bluetooth", "Please wait...", true);    //Show progress to connecting
-        mConnectThread = new ConnectThread(device, uuid);   //Create ConnectThread
+        mConnectThread = new ConnectThread(device);   //Create ConnectThread
         mConnectThread.start(); //Start ConnectThread
     }
 

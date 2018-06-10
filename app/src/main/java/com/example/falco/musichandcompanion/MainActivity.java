@@ -1,5 +1,6 @@
 package com.example.falco.musichandcompanion;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,11 +14,13 @@ public class MainActivity extends AppCompatActivity {
 
     //Debug tag
     String TAG = "MainActivity";
+    String mode;    //String for play mode
 
     //Button
     Button selectButton;
     Button selectRightDeviceButton;
     Button selectLeftDeviceButton;
+    Button playButton;
 
     //TextViews
     TextView selectedInstrument;
@@ -25,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
     TextView selectedLeftDevice;
 
     //Connection services
-    BluetoothConnectionService rightService;
-    BluetoothConnectionService leftService;
+    BluetoothDevice rightDevice;
+    BluetoothDevice leftDevice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,62 +41,129 @@ public class MainActivity extends AppCompatActivity {
         selectedLeftDevice = findViewById(R.id.selectedLeftBT);
 
         if(savedInstanceState != null){
-            selectedInstrument.setText(savedInstanceState.getString("instrument"));
-            rightService = (BluetoothConnectionService)savedInstanceState.getSerializable("rightConnection");
-            selectedRightDevice.setText(savedInstanceState.getString("rightConnectionName"));
-            leftService = (BluetoothConnectionService)savedInstanceState.getSerializable("leftConnection");
-            selectedLeftDevice.setText(savedInstanceState.getString("leftConnectionName"));
+            if(savedInstanceState.getString("instrument") != null){
+                selectedInstrument.setText(savedInstanceState.getString("instrument"));
+            }
+            if(savedInstanceState.getParcelable("rightDevice") != null){
+                rightDevice = savedInstanceState.getParcelable("rightDevice");
+            }
+            if(savedInstanceState.getString("rightConnectionName") != null){
+                selectedRightDevice.setText(savedInstanceState.getString("rightConnectionName"));
+            }
+            if(savedInstanceState.getParcelable("leftDevice") != null){
+                leftDevice = savedInstanceState.getParcelable("leftDevice");
+            }
+            if(savedInstanceState.getString("leftConnectionName") != null){
+                selectedLeftDevice.setText(savedInstanceState.getString("leftConnectionName"));
+            }
         }
 
         Bundle extras = getIntent().getExtras();
         if(extras != null){
-            selectedInstrument.setText(extras.getString("instrument"));
-            rightService = (BluetoothConnectionService)extras.getSerializable("rightConnection");
-            selectedRightDevice.setText(extras.getString("rightConnectionName"));
-            leftService = (BluetoothConnectionService)extras.getSerializable("leftConnection");
-            selectedLeftDevice.setText(extras.getString("leftConnectionName"));
+            if(extras.getString("instrument") != null){
+                selectedInstrument.setText(extras.getString("instrument"));
+            }
+            if(extras.getParcelable("rightDevice") != null){
+                rightDevice = extras.getParcelable("rightDevice");
+            }
+            if(extras.getString("rightConnectionName") != null){
+                selectedRightDevice.setText(extras.getString("rightConnectionName"));
+            }
+            if(extras.getParcelable("leftDevice") != null){
+                leftDevice = extras.getParcelable("leftDevice");
+            }
+            if(extras.getString("leftConnectionName") != null){
+                selectedLeftDevice.setText(extras.getString("leftConnectionName"));
+            }
         }
 
         selectButton = findViewById(R.id.selectInstrumentButton);
         selectRightDeviceButton = findViewById(R.id.selectRightDeviceButton);
         selectLeftDeviceButton = findViewById(R.id.selectLeftDeviceButton);
+        playButton = findViewById(R.id.playButton);
+
+        if(!selectedInstrument.getText().equals("NONE")){
+            if(rightDevice != null && leftDevice != null){
+                playButton.setVisibility(View.VISIBLE);
+                mode = "two-handed";
+            }
+
+            else if(rightDevice != null && leftDevice == null){
+                playButton.setVisibility(View.VISIBLE);
+                mode = "right-handed";
+            }
+
+            else if(leftDevice != null && rightDevice == null){
+                playButton.setVisibility(View.VISIBLE);
+                mode = "left-handed";
+            }
+        }
 
         selectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toSelectScreen();
+                toInstrumentSelectScreen();
             }
         });
 
         selectRightDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toRightSelectionScreen();
+                toRightDeviceSelectionScreen();
             }
         });
 
         selectLeftDeviceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toLeftSelectionScreen();
+                toLeftDeviceSelectionScreen();
+            }
+        });
+
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toPlayScreen();
             }
         });
     }
 
-    public void toSelectScreen(){
+    public void toPlayScreen() {
+        Intent playIntent = new Intent(this, PlayActivity.class);
+        playIntent.putExtra("instrument", selectedInstrument.getText());
+        playIntent.putExtra("rightDevice", rightDevice);
+        playIntent.putExtra("leftDevice", leftDevice);
+        playIntent.putExtra("mode", mode);
+        startActivity(playIntent);
+    }
+
+    public void toInstrumentSelectScreen(){
         Intent selectIntent = new Intent(this, SelectionActivity.class);
+        selectIntent.putExtra("rightConnectionName", selectedRightDevice.getText());
+        selectIntent.putExtra("leftConnectionName", selectedLeftDevice.getText());
+        selectIntent.putExtra("rightDevice", rightDevice);
+        selectIntent.putExtra("leftDevice", leftDevice);
         startActivity(selectIntent);
     }
 
-    public void toRightSelectionScreen() {
+    public void toRightDeviceSelectionScreen() {
         Intent selectIntent = new Intent(this, ConnectionActivity.class);
+        selectIntent.putExtra("instrument", selectedInstrument.getText());
         selectIntent.putExtra("side", "right");
+        if(leftDevice != null){
+            selectIntent.putExtra("leftDevice", leftDevice);
+            selectIntent.putExtra("leftConnectionName", selectedLeftDevice.getText());
+        }
         startActivity(selectIntent);
     }
 
-    public void toLeftSelectionScreen() {
+    public void toLeftDeviceSelectionScreen() {
         Intent selectIntent = new Intent(this, ConnectionActivity.class);
+        selectIntent.putExtra("instrument",  selectedInstrument.getText());
         selectIntent.putExtra("side", "left");
+        if(rightDevice != null){
+            selectIntent.putExtra("rightDevice", rightDevice);
+        }
         startActivity(selectIntent);
     }
 
@@ -103,8 +173,8 @@ public class MainActivity extends AppCompatActivity {
         String instrument = savedInstanceState.getString("instrument");
         String rightConnectionName = savedInstanceState.getString("rightConnectionName");
         String leftConnectionName = savedInstanceState.getString("leftConnectionName");
-        rightService = (BluetoothConnectionService)savedInstanceState.getSerializable("rightConnection");
-        leftService = (BluetoothConnectionService)savedInstanceState.getSerializable("leftConnection");
+        rightDevice = savedInstanceState.getParcelable("rightDevice");
+        leftDevice = savedInstanceState.getParcelable("leftDevice");
         selectedInstrument.setText(instrument);
         selectedRightDevice.setText(rightConnectionName);
         selectedLeftDevice.setText(leftConnectionName);
@@ -119,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
         outState.putString("instrument", instrument);
         outState.putString("rightConnectionName", rightConnectionName);
         outState.putString("leftConnectionName", leftConnectionName);
-        outState.putSerializable("rightConnection", rightService);
-        outState.putSerializable("leftConnection", leftService);
+        outState.putParcelable("rightDevice", rightDevice);
+        outState.putParcelable("leftDevice", leftDevice);
     }
 }

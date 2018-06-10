@@ -64,7 +64,7 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_gravity="center"
-                    android:text="@string/instrument_bass" />
+                    android:text="@string/wip" />
 
             </RelativeLayout>
 
@@ -87,7 +87,7 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_gravity="center"
-                    android:text="@string/instrument_cello" />
+                    android:text="@string/wip" />
 
 
             </RelativeLayout>
@@ -111,7 +111,7 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_gravity="center"
-                    android:text="@string/instrument_djembe"/>
+                    android:text="@string/wip"/>
 
             </RelativeLayout>
 
@@ -151,7 +151,7 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_gravity="center"
-                    android:text="@string/instrument_drums" />
+                    android:text="@string/wip" />
 
             </RelativeLayout>
 
@@ -174,7 +174,7 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_gravity="center"
-                    android:text="@string/instrument_guitar" />
+                    android:text="@string/wip" />
 
 
             </RelativeLayout>
@@ -238,7 +238,7 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_gravity="center"
-                    android:text="@string/instrument_piano" />
+                    android:text="@string/wip" />
 
             </RelativeLayout>
 
@@ -261,7 +261,7 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_gravity="center"
-                    android:text="@string/instrument_tambourine" />
+                    android:text="@string/wip" />
 
 
             </RelativeLayout>
@@ -285,7 +285,7 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_gravity="center"
-                    android:text="@string/instrument_violin"/>
+                    android:text="@string/wip"/>
 
             </RelativeLayout>
 

@@ -7,23 +7,45 @@
     tools:context=".MainActivity">
 
     <RelativeLayout
+        android:id="@+id/totalLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent">
 
         <TextView
+            android:id="@+id/welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/welcome"
+            android:textSize="50sp" />
+
+        <TextView
+            android:id="@+id/musichandver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="55dp"
+            android:textSize="12sp"
+            android:text="@string/musichandver"/>
+
+        <TextView
             android:id="@+id/selectedInstrumentText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/welcome"
             android:textSize="20sp"
+            android:layout_marginTop="10dp"
             android:text="@string/instrument_selection_text"/>
 
         <TextView
             android:id="@+id/selectedInstrument"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/welcome"
             android:textSize="20sp"
+            android:layout_marginTop="10dp"
             android:text="@string/main_selected_instrument"
             android:layout_toRightOf="@id/selectedInstrumentText"
             android:layout_toEndOf="@id/selectedInstrumentText"/>
@@ -90,6 +112,17 @@
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
             android:layout_below="@id/selectedLeftText"/>
+
+        <Button
+            android:id="@+id/playButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/play"
+            android:layout_below="@id/selectLeftDeviceButton"
+            android:layout_marginTop="50dp"
+            android:textSize="50sp"
+            android:layout_centerHorizontal="true"
+            android:visibility="invisible"/>
 
 
     </RelativeLayout>

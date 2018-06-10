@@ -1,5 +1,6 @@
 package com.example.falco.musichandcompanion;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class SelectionActivity extends AppCompatActivity {
+
+    //Fields to return
+    String rightConnectionName;
+    String leftConnectionName;
+    BluetoothDevice rightDevice;
+    BluetoothDevice leftDevice;
 
     //Buttons
     Button bassButton;
@@ -43,49 +50,47 @@ public class SelectionActivity extends AppCompatActivity {
 
         selectedInstrument = findViewById(R.id.instrumentSelection);
 
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            rightConnectionName = extras.getString("rightConnectionName");
+            leftConnectionName = extras.getString("leftConnectionName");
+            rightDevice = extras.getParcelable("rightDevice");
+            leftDevice = extras.getParcelable("leftDevice");
+        }
+
         //OnClick Listeners
         bassButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resetButtonStrings();
-                selectedInstrument.setText(bassButton.getText());
-                bassButton.setText(">Bass<");
+                showWip("Bass");
             }
         });
 
         celloButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resetButtonStrings();
-                selectedInstrument.setText(celloButton.getText());
-                celloButton.setText(">Cello<");
+                showWip("Cello");
             }
         });
 
         djembeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resetButtonStrings();
-                selectedInstrument.setText(djembeButton.getText());
-                djembeButton.setText(">Djembe<");
+                showWip("Drums");
             }
         });
 
         drumsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resetButtonStrings();
-                selectedInstrument.setText(drumsButton.getText());
-                drumsButton.setText(">Drums<");
+                showWip("Drums");
             }
         });
 
         guitarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resetButtonStrings();
-                selectedInstrument.setText(guitarButton.getText());
-                guitarButton.setText(">Drums<");
+                showWip("Guitar");
             }
         });
 
@@ -101,27 +106,21 @@ public class SelectionActivity extends AppCompatActivity {
         pianoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resetButtonStrings();
-                selectedInstrument.setText(pianoButton.getText());
-                pianoButton.setText(">Piano<");
+                showWip("Piano");
             }
         });
 
         tambourineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resetButtonStrings();
-                selectedInstrument.setText(tambourineButton.getText());
-                tambourineButton.setText(">Tambourine<");
+                showWip("Tambourine");
             }
         });
 
         violinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resetButtonStrings();
-                selectedInstrument.setText(violinButton.getText());
-                violinButton.setText(">Violin<");
+                showWip("Violin");
             }
         });
 
@@ -130,20 +129,28 @@ public class SelectionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent returnIntent = new Intent(SelectionActivity.this, MainActivity.class);
                 returnIntent.putExtra("instrument", selectedInstrument.getText());
+                returnIntent.putExtra("rightConnectionName", rightConnectionName);
+                returnIntent.putExtra("leftConnectionName", leftConnectionName);
+                returnIntent.putExtra("rightDevice", rightDevice);
+                returnIntent.putExtra("leftDevice", leftDevice);
                 startActivity(returnIntent);
             }
         });
     }
 
+    public void showWip(String instrumentName){
+        Toast.makeText(this, "Sorry! " + instrumentName + " is not available yet!", Toast.LENGTH_LONG).show();
+    }
+
     public void resetButtonStrings(){
-        bassButton.setText("Bass");
-        celloButton.setText("Cello");
-        djembeButton.setText("Djembe");
-        drumsButton.setText("Drums");
-        guitarButton.setText("Guitar");
-        maracasButton.setText("Maracas");
-        pianoButton.setText("Piano");
-        tambourineButton.setText("Tambourine");
-        violinButton.setText("Violin");
+        bassButton.setText(R.string.wip);
+        celloButton.setText(R.string.wip);
+        djembeButton.setText(R.string.wip);
+        drumsButton.setText(R.string.wip);
+        guitarButton.setText(R.string.wip);
+        maracasButton.setText(R.string.instrument_maracas);
+        pianoButton.setText(R.string.wip);
+        tambourineButton.setText(R.string.wip);
+        violinButton.setText(R.string.wip);
     }
 }

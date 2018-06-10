@@ -63,15 +63,15 @@ public class PlayActivity extends AppCompatActivity {
             rightService.startClient(rightDevice);
 
             //Left connection
-            leftService.startClient(leftDevice);
             leftService = new BluetoothConnectionService(this);
+            leftService.startClient(leftDevice);
         }
 
         else if(mode.equals("left-handed")){
             playmode.setText(R.string.left_handed);
             //Left connection
-            leftService.startClient(leftDevice);
             leftService = new BluetoothConnectionService(this);
+            leftService.startClient(leftDevice);
         }
 
         else if(mode.equals("right-handed")){

@@ -279,7 +279,7 @@ public class ConnectionActivity extends AppCompatActivity implements AdapterView
         returnIntent.putExtra("rightDevice", rightDevice);
         returnIntent.putExtra("rightConnectionName", rightConnectionName);
         returnIntent.putExtra("leftDevice", leftDevice);
-        returnIntent.putExtra("leftDeviceName", leftConnectionName);
+        returnIntent.putExtra("leftConnectionName", leftConnectionName);
         startActivity(returnIntent);
     }
 

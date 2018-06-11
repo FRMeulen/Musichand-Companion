@@ -25,13 +25,14 @@ public class BluetoothConnectionService implements Serializable{
     private static final String appName = "MYAPP";  //App name
     private static final UUID MY_UUID_INSECURE = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");   //UUID
 
+    private String side;
+
     //Threads
     private AcceptThread mAcceptThread; //Accept thread - making server socket and waiting for accept
     private ConnectThread mConnectThread;   //Connect thread - connecting to device once socket is accepted
     private ConnectedThread mConnectedThread;   //Connected thread - reading / writing data once connection is secure
 
     private BluetoothDevice mmDevice;   //Connected device
-    private UUID deviceUUID;    //UUID of device
     private ProgressDialog mProgressDialog; //Dialog during connection
 
     private final BluetoothAdapter mBluetoothAdapter;   //Phone bluetooth adapter
@@ -40,8 +41,9 @@ public class BluetoothConnectionService implements Serializable{
     private ParseThread parser;
 
     //Constructor
-    public BluetoothConnectionService (Context context) {
+    public BluetoothConnectionService (Context context, String setSide) {
         mContext = context; //Set context
+        side = setSide;
         parser = new ParseThread(context);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();   //Get phone bluetooth adapter
         start();    //Start
@@ -171,7 +173,7 @@ public class BluetoothConnectionService implements Serializable{
     public void startClient(BluetoothDevice device){
         Log.d(TAG, "startClient: started"); //Log
 
-        mProgressDialog = ProgressDialog.show(mContext, "Connecting Bluetooth", "Please wait...", true);    //Show progress to connecting
+        mProgressDialog = ProgressDialog.show(mContext, "Connecting Bluetooth", side+" hand connecting...", true);    //Show progress to connecting
         mConnectThread = new ConnectThread(device);   //Create ConnectThread
         mConnectThread.start(); //Start ConnectThread
     }

@@ -41,40 +41,20 @@ public class MainActivity extends AppCompatActivity {
         selectedLeftDevice = findViewById(R.id.selectedLeftBT);
 
         if(savedInstanceState != null){
-            if(savedInstanceState.getString("instrument") != null){
-                selectedInstrument.setText(savedInstanceState.getString("instrument"));
-            }
-            if(savedInstanceState.getParcelable("rightDevice") != null){
-                rightDevice = savedInstanceState.getParcelable("rightDevice");
-            }
-            if(savedInstanceState.getString("rightConnectionName") != null){
-                selectedRightDevice.setText(savedInstanceState.getString("rightConnectionName"));
-            }
-            if(savedInstanceState.getParcelable("leftDevice") != null){
-                leftDevice = savedInstanceState.getParcelable("leftDevice");
-            }
-            if(savedInstanceState.getString("leftConnectionName") != null){
-                selectedLeftDevice.setText(savedInstanceState.getString("leftConnectionName"));
-            }
+            selectedInstrument.setText(savedInstanceState.getString("instrument"));
+            rightDevice = savedInstanceState.getParcelable("rightDevice");
+            selectedRightDevice.setText(savedInstanceState.getString("rightConnectionName"));
+            leftDevice = savedInstanceState.getParcelable("leftDevice");
+            selectedLeftDevice.setText(savedInstanceState.getString("leftConnectionName"));
         }
 
         Bundle extras = getIntent().getExtras();
         if(extras != null){
-            if(extras.getString("instrument") != null){
-                selectedInstrument.setText(extras.getString("instrument"));
-            }
-            if(extras.getParcelable("rightDevice") != null){
-                rightDevice = extras.getParcelable("rightDevice");
-            }
-            if(extras.getString("rightConnectionName") != null){
-                selectedRightDevice.setText(extras.getString("rightConnectionName"));
-            }
-            if(extras.getParcelable("leftDevice") != null){
-                leftDevice = extras.getParcelable("leftDevice");
-            }
-            if(extras.getString("leftConnectionName") != null){
-                selectedLeftDevice.setText(extras.getString("leftConnectionName"));
-            }
+            selectedInstrument.setText(extras.getString("instrument"));
+            rightDevice = extras.getParcelable("rightDevice");
+            selectedRightDevice.setText(extras.getString("rightConnectionName"));
+            leftDevice = extras.getParcelable("leftDevice");
+            selectedLeftDevice.setText(extras.getString("leftConnectionName"));
         }
 
         selectButton = findViewById(R.id.selectInstrumentButton);
@@ -150,10 +130,9 @@ public class MainActivity extends AppCompatActivity {
         Intent selectIntent = new Intent(this, ConnectionActivity.class);
         selectIntent.putExtra("instrument", selectedInstrument.getText());
         selectIntent.putExtra("side", "right");
-        if(leftDevice != null){
-            selectIntent.putExtra("leftDevice", leftDevice);
-            selectIntent.putExtra("leftConnectionName", selectedLeftDevice.getText());
-        }
+        selectIntent.putExtra("leftDevice", leftDevice);
+        selectIntent.putExtra("leftConnectionName", selectedLeftDevice.getText());
+
         startActivity(selectIntent);
     }
 
@@ -161,9 +140,8 @@ public class MainActivity extends AppCompatActivity {
         Intent selectIntent = new Intent(this, ConnectionActivity.class);
         selectIntent.putExtra("instrument",  selectedInstrument.getText());
         selectIntent.putExtra("side", "left");
-        if(rightDevice != null){
-            selectIntent.putExtra("rightDevice", rightDevice);
-        }
+        selectIntent.putExtra("rightDevice", rightDevice);
+        selectIntent.putExtra("rightConnectionName", selectedRightDevice.getText());
         startActivity(selectIntent);
     }
 

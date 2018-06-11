@@ -189,14 +189,18 @@ public class ConnectionActivity extends AppCompatActivity implements AdapterView
         if(extras != null){
             side = extras.getString("side");
             instrument = extras.getString("instrument");
+            rightDevice = extras.getParcelable("rightDevice");
+            leftDevice = extras.getParcelable("leftDevice");
+            rightConnectionName = extras.getString("rightConnectionName");
+            leftConnectionName = extras.getString("leftConnectionName");
+
+            Log.d(TAG, "Right name: "+rightConnectionName);
+            Log.d(TAG, "Left name: "+leftConnectionName);
+
             if(side.equals("right")){
-                rightDevice = extras.getParcelable("rightDevice");
-                leftDevice = extras.getParcelable("leftDevice");
                 mIgnoredDevices.add(leftDevice);
             }
             if(side.equals("left")){
-                rightDevice = extras.getParcelable("rightDevice");
-                leftDevice = extras.getParcelable("leftDevice");
                 mIgnoredDevices.add(rightDevice);
             }
         }

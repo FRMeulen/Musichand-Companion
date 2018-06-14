@@ -127,19 +127,28 @@ public class SelectionActivity extends AppCompatActivity {
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent returnIntent = new Intent(SelectionActivity.this, MainActivity.class);
-                returnIntent.putExtra("instrument", selectedInstrument.getText());
-                returnIntent.putExtra("rightConnectionName", rightConnectionName);
-                returnIntent.putExtra("leftConnectionName", leftConnectionName);
-                returnIntent.putExtra("rightDevice", rightDevice);
-                returnIntent.putExtra("leftDevice", leftDevice);
-                startActivity(returnIntent);
+                if(selectedInstrument.getText().equals("NONE")){
+                    noneSelected();
+                }
+                else{
+                    Intent returnIntent = new Intent(SelectionActivity.this, MainActivity.class);
+                    returnIntent.putExtra("instrument", selectedInstrument.getText());
+                    returnIntent.putExtra("rightConnectionName", rightConnectionName);
+                    returnIntent.putExtra("leftConnectionName", leftConnectionName);
+                    returnIntent.putExtra("rightDevice", rightDevice);
+                    returnIntent.putExtra("leftDevice", leftDevice);
+                    startActivity(returnIntent);
+                }
             }
         });
     }
 
     public void showWip(String instrumentName){
         Toast.makeText(this, "Sorry! " + instrumentName + " is not available yet!", Toast.LENGTH_LONG).show();
+    }
+
+    public void noneSelected(){
+        Toast.makeText(this, "No instrument selected!", Toast.LENGTH_LONG).show();
     }
 
     public void resetButtonStrings(){

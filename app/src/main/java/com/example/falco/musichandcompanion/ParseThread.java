@@ -27,16 +27,23 @@ public class ParseThread extends Thread {
             dataRead = messageIn.substring(0, 5);
             Log.d(TAG, "PlaySound called with "+dataRead);
             playSound(dataRead);
-            dataRead = "";
+            dataRead = null;
         }
 
         else if (messageIn.length() < 7){
-            dataRead = dataRead + messageIn;
-            Log.d(TAG, "New length: "+dataRead.length());
+            if(dataRead == null){
+                dataRead = messageIn;
+                Log.d(TAG, "New length: "+dataRead.length());
+            }
+            else {
+                dataRead += messageIn;
+                Log.d(TAG, "Parsed message: "+dataRead+" with length "+dataRead.length());
+                parse(dataRead);
+            }
         }
 
-        else if(messageIn.length() > 7){
-            dataRead = "";
+        else {
+            dataRead = null;
             Log.d(TAG, "Message too long, ignoring...");
         }
     }

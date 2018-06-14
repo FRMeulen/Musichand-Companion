@@ -9,6 +9,8 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.TextView;
@@ -22,10 +24,17 @@ import java.util.UUID;
 //Class
 public class BluetoothConnectionService implements Serializable{
     private static final String TAG = "BluetoothConnectionServ";    //Log Tag
+    private Handler mHandler;
     private static final String appName = "MYAPP";  //App name
     private static final UUID MY_UUID_INSECURE = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");   //UUID
 
     private String side;
+
+    private interface MessageConstants {
+        int MESSAGE_READ = 0;
+        int MESSAGE_WRITE = 1;
+        int MESSAGE_TOAST = 2;
+    }
 
     //Threads
     private AcceptThread mAcceptThread; //Accept thread - making server socket and waiting for accept
@@ -182,6 +191,7 @@ public class BluetoothConnectionService implements Serializable{
     private class ConnectedThread extends Thread implements Serializable {
         private final BluetoothSocket mmSocket; //Socket
         private final InputStream mmInStream;   //Input stream
+        byte buffer[];
 
         //Constructor
         public ConnectedThread (BluetoothSocket socket){
@@ -201,16 +211,18 @@ public class BluetoothConnectionService implements Serializable{
 
         //Run on creation
         public void run(){
-            byte[] buffer = new byte[8]; //Buffer byte array - needs more space for longer strings
-            int bytes;  //Length of read bytes
+            buffer = new byte[1024]; //Buffer byte array - needs more space for longer strings
+            int numBytes;  //Length of read bytes
 
             Log.d(TAG, "Starting read loop...");
             while(true){    //Infinite loop
                 try {   //Try to read input
                     if(mmInStream.available()> 0){  //If input is found
                         Log.d(TAG, "Reading...");
-                        bytes = mmInStream.read(buffer);    //Set length
-                        String incomingMessage = new String(buffer, 0, bytes);  //Form string from bytes
+                        numBytes = mmInStream.read(buffer);    //Set length
+
+
+                        String incomingMessage = new String(buffer, 0, numBytes);  //Form string from bytes
                         Log.d(TAG, "InputStream: " + incomingMessage);  //Log
                         dataRead = incomingMessage; //Store read message
 

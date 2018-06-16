@@ -8,12 +8,14 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,6 +39,8 @@ public class BluetoothConnectionService implements Serializable{
     }
 
     //Threads
+    private PlayActivity parent;
+
     private AcceptThread mAcceptThread; //Accept thread - making server socket and waiting for accept
     private ConnectThread mConnectThread;   //Connect thread - connecting to device once socket is accepted
     private ConnectedThread mConnectedThread;   //Connected thread - reading / writing data once connection is secure
@@ -50,11 +54,12 @@ public class BluetoothConnectionService implements Serializable{
     private ParseThread parser;
 
     //Constructor
-    public BluetoothConnectionService (Context context, String setSide) {
+    public BluetoothConnectionService (Context context, String setSide, PlayActivity activity) {
         mContext = context; //Set context
         side = setSide;
         parser = new ParseThread(context);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();   //Get phone bluetooth adapter
+        parent = activity;
         start();    //Start
     }
 
@@ -72,6 +77,8 @@ public class BluetoothConnectionService implements Serializable{
             }
             catch(IOException e){   //Catch exceptions
                 Log.e(TAG, "AcceptThread: IOException: " + e.getMessage()); //Log
+                showError("Error starting AcceptThread, restarting app...");
+                parent.restartApp();
             }
 
             mmServerSocket = tmp;   //If successful set found socket to permanent variable
@@ -90,6 +97,8 @@ public class BluetoothConnectionService implements Serializable{
                 return; //Kill thread
             }catch(IOException e){  //Catch exceptions
                 Log.e(TAG, "run: IOException: " + e.getMessage());  //Log
+                showError("Error running AcceptThread, restarting app...");
+                parent.restartApp();
             }
         }
 
@@ -100,6 +109,8 @@ public class BluetoothConnectionService implements Serializable{
                 mmServerSocket.close(); //Close socket
             } catch (IOException e){    //Catch exceptions
                 Log.e(TAG, "cancel: Closing of AcceptThread ServerSocket failed " + e.getMessage());    //Log
+                showError("Error closing AcceptThread ServerSocket, restarting app...");
+                parent.restartApp();
             }
         }
     }
@@ -123,6 +134,8 @@ public class BluetoothConnectionService implements Serializable{
                 tmp = mmDevice.createInsecureRfcommSocketToServiceRecord(MY_UUID_INSECURE);   //Create Rfcomm socket
             }catch(IOException e){  //Catch exceptions
                 Log.e(TAG, "ConnectThread: Could not create InsecureRfcommSocket " + e.getMessage());   //Log
+                showError("Error creating RfcommSocket, restarting app...");
+                parent.restartApp();
             }
 
             mmSocket = tmp; //Store socket in permanent variable
@@ -135,8 +148,12 @@ public class BluetoothConnectionService implements Serializable{
                     mmSocket.close();   //Close
                 } catch (IOException e1) {  //Catch exceptions
                     Log.e(TAG, "ConnectThread: Unable to close connection in socket");  //Log
+                    showError("Error close connection in Socket, restarting app...");
+                    parent.restartApp();
                 }
-                Log.e(TAG, "ConnectThread: Could not connect to InsecureRfcommSocket " + e.getMessage());   //Log
+                Log.e(TAG, "ConnectThread: Could not connect to RfcommSocket " + e.getMessage());   //Log
+                showError("Error connecting to RfcommSocket, restarting app...");
+                parent.restartApp();
             }
 
             connected(mmSocket);    //Start connected thread
@@ -151,6 +168,8 @@ public class BluetoothConnectionService implements Serializable{
                 mmSocket.close();   //Close socket
             } catch (IOException e){    //Catch exceptions
                 Log.e(TAG, "cancel: Closing of ConnectThread Socket failed " + e.getMessage()); //Log
+                showError("Error closing ConnectThread Socket, restarting app...");
+                parent.restartApp();
             }
         }
     }
@@ -204,6 +223,8 @@ public class BluetoothConnectionService implements Serializable{
                 tmpIn = mmSocket.getInputStream();  //Get input stream
             } catch (IOException e) {   //Catch exceptions
                 Log.e(TAG, "ConnectedThread: Failed to get input stream");  //Log
+                showError("Error opening InputStream, restarting app...");
+                parent.restartApp();
             }
 
             mmInStream = tmpIn; //Store input stream in permanent variable
@@ -233,6 +254,8 @@ public class BluetoothConnectionService implements Serializable{
                     }
                 } catch (IOException e) {   //Catch exceptions
                     Log.e(TAG, "run: Error reading input stream");  //Log
+                    showError("Error reading InputStream, restarting app...");
+                    parent.restartApp();
                     break;  //Break loop
                 }
             }
@@ -259,5 +282,9 @@ public class BluetoothConnectionService implements Serializable{
         mConnectedThread = new ConnectedThread(mmSocket);   //Create ConnectedThread
         mConnectedThread.start();   //Start ConnectedThread
         parser.start();
+    }
+
+    public void showError(String error){
+        Toast.makeText(mContext, error, Toast.LENGTH_LONG).show();
     }
 }

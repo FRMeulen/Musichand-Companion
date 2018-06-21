@@ -25,6 +25,8 @@ import java.util.UUID;
 
 //Class
 public class BluetoothConnectionService implements Serializable{
+    private final PlayActivity parent;
+
     private static final String TAG = "BluetoothConnectionServ";    //Log Tag
     private Handler mHandler;
     private static final String appName = "MYAPP";  //App name
@@ -39,8 +41,6 @@ public class BluetoothConnectionService implements Serializable{
     }
 
     //Threads
-    private PlayActivity parent;
-
     private AcceptThread mAcceptThread; //Accept thread - making server socket and waiting for accept
     private ConnectThread mConnectThread;   //Connect thread - connecting to device once socket is accepted
     private ConnectedThread mConnectedThread;   //Connected thread - reading / writing data once connection is secure
@@ -55,11 +55,11 @@ public class BluetoothConnectionService implements Serializable{
 
     //Constructor
     public BluetoothConnectionService (Context context, String setSide, PlayActivity activity) {
+        parent = activity;
         mContext = context; //Set context
         side = setSide;
         parser = new ParseThread(context);
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();   //Get phone bluetooth adapter
-        parent = activity;
         start();    //Start
     }
 

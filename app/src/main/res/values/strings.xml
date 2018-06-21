@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Musichand Companion</string>
     <string name="welcome">Welcome!</string>
-    <string name="musichandver">To Musichand version 1.0.3</string>
+    <string name="musichandver">To Musichand version 1.0.5</string>
     <string name="on_off">Bluetooth On/Off!</string>
     <string name="list_devices">Discover Devices!</string>
     <string name="select">Select!</string>
@@ -33,4 +33,5 @@
     <string name="left_handed">Mode: Left-Handed</string>
     <string name="right_handed">Mode: Right-Handed</string>
     <string name="reset">RESET APP</string>
+    <string name="please_reset">Error occurred, please use reset button.</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.falco.musichandcompanion;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PlayActivity extends AppCompatActivity {
 
@@ -59,25 +61,25 @@ public class PlayActivity extends AppCompatActivity {
             playmode.setText(R.string.two_handed);
 
             //Right connection
-            rightService = new BluetoothConnectionService(this, "Right");
+            rightService = new BluetoothConnectionService(this, "Right", this);
             rightService.startClient(rightDevice);
 
             //Left connection
-            leftService = new BluetoothConnectionService(this, "Left");
+            leftService = new BluetoothConnectionService(this, "Left", this);
             leftService.startClient(leftDevice);
         }
 
         else if(mode.equals("left-handed")){
             playmode.setText(R.string.left_handed);
             //Left connection
-            leftService = new BluetoothConnectionService(this, "Left");
+            leftService = new BluetoothConnectionService(this, "Left", this);
             leftService.startClient(leftDevice);
         }
 
         else if(mode.equals("right-handed")){
             playmode.setText(R.string.right_handed);
             //Right connection
-            rightService = new BluetoothConnectionService(this, "Right");
+            rightService = new BluetoothConnectionService(this, "Right", this);
             rightService.startClient(rightDevice);
         }
     }

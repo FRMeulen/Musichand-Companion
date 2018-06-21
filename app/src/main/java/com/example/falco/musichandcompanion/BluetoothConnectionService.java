@@ -14,6 +14,7 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,6 +24,8 @@ import java.util.UUID;
 
 //Class
 public class BluetoothConnectionService implements Serializable{
+    private final PlayActivity parent;
+
     private static final String TAG = "BluetoothConnectionServ";    //Log Tag
     private Handler mHandler;
     private static final String appName = "MYAPP";  //App name
@@ -50,7 +53,8 @@ public class BluetoothConnectionService implements Serializable{
     private ParseThread parser;
 
     //Constructor
-    public BluetoothConnectionService (Context context, String setSide) {
+    public BluetoothConnectionService (Context context, String setSide, PlayActivity activity) {
+        parent = activity;
         mContext = context; //Set context
         side = setSide;
         parser = new ParseThread(context);

@@ -49,12 +49,6 @@ public class ParseThread extends Thread {
     }
 
     private void playSound(String sound){
-        Log.i(TAG, "PlaySound: "+dataRead);
-        Log.i(TAG, "PlaySound: length: "+dataRead.length());
-        if(sound.equals("mr:01")){
-            Log.d(TAG, "Maracas sound one detected!");
-            MediaPlayer mp = MediaPlayer.create(mContext, R.raw.maraca_1);
-            player = new SoundThread(mp);
-        }
+        player = new SoundThread(sound, mContext);
     }
 }

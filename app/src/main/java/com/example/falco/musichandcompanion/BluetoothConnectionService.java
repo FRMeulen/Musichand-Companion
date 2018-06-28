@@ -77,7 +77,6 @@ public class BluetoothConnectionService implements Serializable{
             }
             catch(IOException e){   //Catch exceptions
                 Log.e(TAG, "AcceptThread: IOException: " + e.getMessage()); //Log
-                showError("Error starting AcceptThread, restarting app...");
                 parent.restartApp();
             }
 
@@ -97,7 +96,6 @@ public class BluetoothConnectionService implements Serializable{
                 return; //Kill thread
             }catch(IOException e){  //Catch exceptions
                 Log.e(TAG, "run: IOException: " + e.getMessage());  //Log
-                showError("Error running AcceptThread, restarting app...");
                 parent.restartApp();
             }
         }
@@ -109,7 +107,6 @@ public class BluetoothConnectionService implements Serializable{
                 mmServerSocket.close(); //Close socket
             } catch (IOException e){    //Catch exceptions
                 Log.e(TAG, "cancel: Closing of AcceptThread ServerSocket failed " + e.getMessage());    //Log
-                showError("Error closing AcceptThread ServerSocket, restarting app...");
                 parent.restartApp();
             }
         }
@@ -134,7 +131,6 @@ public class BluetoothConnectionService implements Serializable{
                 tmp = mmDevice.createInsecureRfcommSocketToServiceRecord(MY_UUID_INSECURE);   //Create Rfcomm socket
             }catch(IOException e){  //Catch exceptions
                 Log.e(TAG, "ConnectThread: Could not create InsecureRfcommSocket " + e.getMessage());   //Log
-                showError("Error creating RfcommSocket, restarting app...");
                 parent.restartApp();
             }
 
@@ -148,11 +144,9 @@ public class BluetoothConnectionService implements Serializable{
                     mmSocket.close();   //Close
                 } catch (IOException e1) {  //Catch exceptions
                     Log.e(TAG, "ConnectThread: Unable to close connection in socket");  //Log
-                    showError("Error close connection in Socket, restarting app...");
                     parent.restartApp();
                 }
                 Log.e(TAG, "ConnectThread: Could not connect to RfcommSocket " + e.getMessage());   //Log
-                showError("Error connecting to RfcommSocket, restarting app...");
                 parent.restartApp();
             }
 
@@ -168,7 +162,6 @@ public class BluetoothConnectionService implements Serializable{
                 mmSocket.close();   //Close socket
             } catch (IOException e){    //Catch exceptions
                 Log.e(TAG, "cancel: Closing of ConnectThread Socket failed " + e.getMessage()); //Log
-                showError("Error closing ConnectThread Socket, restarting app...");
                 parent.restartApp();
             }
         }
@@ -223,7 +216,6 @@ public class BluetoothConnectionService implements Serializable{
                 tmpIn = mmSocket.getInputStream();  //Get input stream
             } catch (IOException e) {   //Catch exceptions
                 Log.e(TAG, "ConnectedThread: Failed to get input stream");  //Log
-                showError("Error opening InputStream, restarting app...");
                 parent.restartApp();
             }
 
@@ -254,7 +246,6 @@ public class BluetoothConnectionService implements Serializable{
                     }
                 } catch (IOException e) {   //Catch exceptions
                     Log.e(TAG, "run: Error reading input stream");  //Log
-                    showError("Error reading InputStream, restarting app...");
                     parent.restartApp();
                     break;  //Break loop
                 }
@@ -282,9 +273,5 @@ public class BluetoothConnectionService implements Serializable{
         mConnectedThread = new ConnectedThread(mmSocket);   //Create ConnectedThread
         mConnectedThread.start();   //Start ConnectedThread
         parser.start();
-    }
-
-    public void showError(String error){
-        Toast.makeText(mContext, error, Toast.LENGTH_LONG).show();
     }
 }

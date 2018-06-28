@@ -1,5 +1,6 @@
 package com.example.falco.musichandcompanion;
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -31,10 +32,15 @@ public class MainActivity extends AppCompatActivity {
     BluetoothDevice rightDevice;
     BluetoothDevice leftDevice;
 
+    //Bluetooth adapter
+    BluetoothAdapter mBluetoothAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         selectedInstrument = findViewById(R.id.selectedInstrument);
         selectedRightDevice = findViewById(R.id.selectedRightBT);
@@ -109,12 +115,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toPlayScreen() {
-        Intent playIntent = new Intent(this, PlayActivity.class);
-        playIntent.putExtra("instrument", selectedInstrument.getText());
-        playIntent.putExtra("rightDevice", rightDevice);
-        playIntent.putExtra("leftDevice", leftDevice);
-        playIntent.putExtra("mode", mode);
-        startActivity(playIntent);
+        //Check for bluetooth enabled - fixes crash when pressing play with bluetooth disabled
+        if(mBluetoothAdapter.isEnabled()){
+            Intent playIntent = new Intent(this, PlayActivity.class);
+            playIntent.putExtra("instrument", selectedInstrument.getText());
+            playIntent.putExtra("rightDevice", rightDevice);
+            playIntent.putExtra("leftDevice", leftDevice);
+            playIntent.putExtra("mode", mode);
+            startActivity(playIntent);
+        }
+        else{
+            showBTDisabled();
+        }
     }
 
     public void toInstrumentSelectScreen(){
@@ -169,5 +181,9 @@ public class MainActivity extends AppCompatActivity {
         outState.putString("leftConnectionName", leftConnectionName);
         outState.putParcelable("rightDevice", rightDevice);
         outState.putParcelable("leftDevice", leftDevice);
+    }
+
+    private void showBTDisabled() {
+        Toast.makeText(this, "Please re-enable Bluetooth before continuing!", Toast.LENGTH_LONG).show();
     }
 }

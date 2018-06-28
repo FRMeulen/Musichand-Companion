@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Musichand Companion</string>
     <string name="welcome">Welcome!</string>
-    <string name="musichandver">To Musichand version 1.0.5</string>
+    <string name="musichandver">To Musichand version 1.0.6</string>
     <string name="on_off">Bluetooth On/Off!</string>
     <string name="list_devices">Discover Devices!</string>
     <string name="select">Select!</string>
